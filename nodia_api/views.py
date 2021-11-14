@@ -1,11 +1,14 @@
+from django.db.models import manager
 from django.shortcuts import render
 
 from nodia import Constants
 from . import utils
 
 from .serializers import *
+from cbse.serializers import *
 
 from users.models import *
+from cbse.models import *
 
 import requests
 
@@ -67,3 +70,21 @@ def verify_otp(request):
                     return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
             else:
                 return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_all_standards(request):
+    if request.method == "GET":
+        standards = Standard.objects.all()
+        standard_serializer = StandardSerializer(standards, many = True)
+
+        if standard_serializer.is_valid():
+            return Response(standard_serializer.data, status = status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_all_boards(request):
+    if request.method == "GET":
+        boards = Board.objects.all()
+        board_serializer = BoardSerializer(boards, many = True)
+
+        if board_serializer.is_valid():
+            return Response(board_serializer.data, status = status.HTTP_200_OK)
