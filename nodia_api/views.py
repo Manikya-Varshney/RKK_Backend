@@ -9,6 +9,7 @@ from users.models import *
 
 import requests
 
+from django.utils import timezone
 from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -41,3 +42,28 @@ def generate_otp(request):
             return Response(data, status = status.HTTP_200_OK)
         else:
             return Response({Constants.MESSAGE: 'User Does Not Exist', Constants.IS_VERIFIED: False, Constants.PROFILE: None}, status = status.HTTP_200_OK)
+
+@api_view(['POST',])
+def verify_otp(request):
+    if request.method == "POST":
+        otp = request.POST.get(Constants.OTP)
+        phone_number = request.POST.get(Constants.PHONE_NUMBER)
+        serializer = OTPSerializer(data = request.data)
+
+        if not serializer.is_valid():
+            return Response({Constants.MESSAGE:'Phone Number Not Validated!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+
+        try:
+            user_profile = Profile.objects.get(phone_number = phone_number)
+        except Profile.DoesNotExist:
+            return Response({Constants.MESSAGE: 'Profile does not exist!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+
+        if user_profile:
+            if otp == str(user_profile.otp) :
+                if (timezone.now() - user_profile.otp_timestamp).seconds < 1800:
+                    data = {Constants.MESSAGE: 'OTP Verified Successfully!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: True}
+                    return Response(data, status = status.HTTP_200_OK)
+                else:
+                    return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+            else:
+                return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
