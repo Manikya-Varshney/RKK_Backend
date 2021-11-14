@@ -71,18 +71,19 @@ def verify_otp(request):
             else:
                 return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
 
-@api_view(['GET'])
-def get_all_standards(request):
-    if request.method == "GET":
-        standards = Standard.objects.all()
-        standard_serializer = StandardSerializer(standards, many = True)
-        return Response(standard_serializer.data, status = status.HTTP_200_OK)
-
 @api_view(["GET"])
 def get_all_boards(request):
     if request.method == "GET":
         boards = Board.objects.all()    
         board_serializer = BoardSerializer(boards, many = True)
         return Response(board_serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_all_standards(request):
+    if request.method == "GET":
+        board_id = request.GET.get('board_id', 1)
+        standards = Standard.objects.filter(boards__id = board_id)
+        standard_serializer = StandardSerializer(standards, many = True)
+        return Response(standard_serializer.data, status = status.HTTP_200_OK)
 
         
