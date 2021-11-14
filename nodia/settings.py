@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # local apps
-    'nodia_api.apps.NodiaApiConfig'
+    'nodia_api.apps.NodiaApiConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
