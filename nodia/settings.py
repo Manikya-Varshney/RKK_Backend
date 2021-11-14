@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # rest
+    'rest_framework',
+
     # local apps
     'nodia_api.apps.NodiaApiConfig'
 ]
