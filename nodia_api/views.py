@@ -76,15 +76,13 @@ def get_all_standards(request):
     if request.method == "GET":
         standards = Standard.objects.all()
         standard_serializer = StandardSerializer(standards, many = True)
-
-        if standard_serializer.is_valid():
-            return Response(standard_serializer.data, status = status.HTTP_200_OK)
+        return Response(standard_serializer.data, status = status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_all_boards(request):
     if request.method == "GET":
-        boards = Board.objects.all()
+        boards = Board.objects.all()    
         board_serializer = BoardSerializer(boards, many = True)
+        return Response(board_serializer.data, status = status.HTTP_200_OK)
 
-        if board_serializer.is_valid():
-            return Response(board_serializer.data, status = status.HTTP_200_OK)
+        
