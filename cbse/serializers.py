@@ -26,4 +26,4 @@ class ChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chapter
-        fields = '__all__'
+        fields = ['name','chapter_link','subject']
