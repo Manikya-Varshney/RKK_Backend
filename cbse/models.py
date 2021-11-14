@@ -17,7 +17,13 @@ class Standard(models.Model):
 class Subject(models.Model):
     name = models.CharField(max_length=20, blank=False, null=False)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Chapter(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     chapter_link = models.URLField()
     subject = models.ForeignKey(to=Subject, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return "{} - {} - {}".format(self.name, self.subject.name, self.chapter_link)
