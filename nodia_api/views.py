@@ -86,4 +86,12 @@ def get_all_standards(request):
         standard_serializer = StandardSerializer(standards, many = True)
         return Response(standard_serializer.data, status = status.HTTP_200_OK)
 
+@api_view(["GET"])
+def get_all_subjects(request):
+    if request.method == "GET":
+        standard_id = request.GET.get('standard_id', 1)
+        subjects = Subject.objects.filter(standards__id = standard_id)
+        subject_serializer = SubjectSerializer(subjects, many = True)
+        return Response(subject_serializer.data, status = status.HTTP_200_OK)
+
         

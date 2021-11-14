@@ -16,6 +16,7 @@ class Standard(models.Model):
 
 class Subject(models.Model):
     name = models.CharField(max_length=20, blank=False, null=False)
+    standards = models.ManyToManyField(to= Standard)
 
     def __str__(self) -> str:
         return self.name
