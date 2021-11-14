@@ -97,7 +97,7 @@ def get_all_subjects(request):
 @api_view(["GET"])
 def get_all_chapters(request):
     if request.method == "GET":
-        subject_id = request.GET.get('subject_id', 1)
+        subject_id = request.GET.get('subject_id', 2)
         chapters = Chapter.objects.filter(subject__id = subject_id)
         chapter_serializer = ChapterSerializer(chapters, many = True)
         return Response(chapter_serializer.data, status = status.HTTP_200_OK)
