@@ -1,2 +1,5 @@
 HASH = "hash"
 PHONE_NUMBER = "phone_number"
+MESSAGE = "message"
+PROFILE = "profile"
+IS_VERIFIED = "is_verified"
