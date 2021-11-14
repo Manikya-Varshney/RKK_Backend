@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     # local apps
     'nodia_api.apps.NodiaApiConfig',
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'cbse.apps.CbseConfig'
 ]
 
 MIDDLEWARE = [
