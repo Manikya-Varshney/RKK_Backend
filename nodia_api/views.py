@@ -7,6 +7,9 @@ from .serializers import *
 
 from users.models import *
 
+import requests
+
+from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -26,3 +29,15 @@ def generate_otp(request):
             user_profile = Profile.objects.get(phone_number = phone_number)
         except Profile.DoesNotExist:
             user_profile = Profile.objects.create(phone_number = phone_number)
+
+        # url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
+        # requests.post( url )
+
+        if user_profile:
+            user_profile.otp = otp
+            user_profile.save()          
+            message = Constants.OTP_MESSAGE + " {otp} \n {hash}".format(otp = otp, hash = hashValue)
+            data = {Constants.MESSAGE: message, Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}
+            return Response(data, status = status.HTTP_200_OK)
+        else:
+            return Response({Constants.MESSAGE: 'User Does Not Exist', Constants.IS_VERIFIED: False, Constants.PROFILE: None}, status = status.HTTP_200_OK)
