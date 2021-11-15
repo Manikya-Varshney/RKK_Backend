@@ -54,12 +54,12 @@ def verify_otp(request):
         serializer = OTPSerializer(data = request.data)
 
         if not serializer.is_valid():
-            return Response({Constants.MESSAGE:'Phone Number Not Validated!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+            return Response({Constants.MESSAGE:'Phone Number Not Validated!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_404_NOT_FOUND)
 
         try:
             user_profile = Profile.objects.get(phone_number = phone_number)
         except Profile.DoesNotExist:
-            return Response({Constants.MESSAGE: 'Profile does not exist!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+            return Response({Constants.MESSAGE: 'Profile does not exist!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_404_NOT_FOUND)
 
         if user_profile:
             if otp == str(user_profile.otp) :
@@ -67,9 +67,9 @@ def verify_otp(request):
                     data = {Constants.MESSAGE: 'OTP Verified Successfully!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: True}
                     return Response(data, status = status.HTTP_200_OK)
                 else:
-                    return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+                    return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
+                return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
 
 @api_view(["GET"])
 def get_all_boards(request):
