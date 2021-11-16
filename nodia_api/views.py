@@ -35,8 +35,8 @@ def generate_otp(request):
         except Profile.DoesNotExist:
             user_profile = Profile.objects.create(phone_number = phone_number)
 
-        # url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
-        # requests.post( url )
+        url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
+        requests.post( url )
 
         if user_profile:
             user_profile.otp = otp
