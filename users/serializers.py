@@ -1,11 +1,13 @@
 from rest_framework import fields, serializers
 from cbse.models import Board, Language, Standard
+from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
         fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard', 'subjects']
+        extra_kwargs = {'phone_number': {'required': False}, 'subjects': {'required': False}}
 
         def update(self, instance, data):
             instance.name = self.data.get('name', instance.name)
