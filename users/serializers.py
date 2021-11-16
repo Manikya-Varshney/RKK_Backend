@@ -28,12 +28,13 @@ class ProfileSerializer(serializers.ModelSerializer):
             instance.board = validated_data.get('board')
 
         if 'language' in validated_data:
-            instance.board = validated_data.get('language')
+            instance.language = validated_data.get('language')
 
         if 'standard' in validated_data:
-            instance.board = validated_data.get('standard')
+            instance.standard = validated_data.get('standard')
 
         if 'subjects' in validated_data:
+            instance.subjects.clear()
             for s in validated_data.get('subjects'):
                 # subject = Subject.objects.get(id = s)
                 instance.subjects.add(s)
