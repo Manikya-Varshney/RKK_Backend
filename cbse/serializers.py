@@ -1,8 +1,14 @@
 from django.db.models import fields
 from rest_framework import serializers
+from users.models import Plan
 
 from .models import *
 
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = '__all__'
 
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:

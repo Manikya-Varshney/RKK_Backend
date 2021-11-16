@@ -113,6 +113,13 @@ def get_all_languages(request):
         language_serializer = LanguageSerializer(languages, many = True)
         return Response(language_serializer.data, status = status.HTTP_200_OK)
 
+@api_view(["GET"])
+def get_all_plans(request):
+    if request.method == "GET":
+        plans = Plan.objects.all()
+        plan_serializer = PlanSerializer(plans, many = True)
+        return Response(plan_serializer.data, status = status.HTTP_200_OK)
+
 @api_view(['POST',])
 def update_profile(request):
     if request.method == "POST":
