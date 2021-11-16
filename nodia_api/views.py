@@ -119,8 +119,8 @@ def update_profile(request):
         if not profile_serializer.is_valid():
             print(profile_serializer.errors)
             return Response({Constants.MESSAGE: 'Invalid data', Constants.PROFILE: None}, status = status.HTTP_400_BAD_REQUEST)
-
-        profile = Profile.objects.get(request.data.get('id'))
+    
+        profile = Profile.objects.get(id = request.POST.get('id'))
         updated_profile = profile_serializer.update(profile, request.data)
 
         return Response({Constants.MESSAGE: 'Profile update successfully', Constants.PROFILE: model_to_dict(updated_profile)}, status = status.HTTP_200_OK)

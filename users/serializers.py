@@ -6,15 +6,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard', 'subjects']
-        extra_kwargs = {'phone_number': {'required': False}, 'subjects': {'required': False}}
+        fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard']
+        extra_kwargs = {'phone_number': {'required': False}, 'subjects': {'required': False}, 'board':{'read_only':True}}
 
         def update(self, instance, data):
             instance.name = self.data.get('name', instance.name)
             instance.phone_number = self.data.get('phone_number', instance.phone_number)
             instance.city = self.data.get('city', instance.city)
             instance.state = self.data.get('state', instance.state)
-
+            print(self.data)
             if 'board' in self.data:
                 board = Board.objects.get(id = self.data.get('board'))
                 instance.board = board
