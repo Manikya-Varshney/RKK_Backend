@@ -44,3 +44,4 @@ class Plan(models.Model):
     price = models.IntegerField()
     discount = models.IntegerField()
     number_of_days = models.IntegerField()
+    
