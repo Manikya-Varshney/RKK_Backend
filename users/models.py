@@ -22,7 +22,7 @@ class Profile(models.Model):
     subjects = models.ManyToManyField(to=Subject, related_name="Subjects", null=True)
 
     def __str__(self):
-        return self.phone_number
+        return self.phone_number + ' - ' + self.id
 
     @classmethod
     def getAllAddresses(cls, id):
@@ -32,7 +32,7 @@ class Profile(models.Model):
     @classmethod
     def getAllScans(cls, user_id):
         profile = cls.objects.get(pk = user_id)
-        return profile.scan_set.all() 
+        return profile.scan_set.all()
 
 
 
