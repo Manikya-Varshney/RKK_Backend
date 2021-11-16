@@ -6,7 +6,7 @@ from cbse.serializers import SubjectSerializer
 
 class ProfileSerializer(serializers.ModelSerializer):
 
-    subjects = serializers.PrimaryKeyRelatedField(many = True, read_only = True, required = False)
+    subjects = serializers.PrimaryKeyRelatedField(many = True, queryset = Subject.objects.all())
     # subjects = SubjectSerializer(many = True, required = False)
 
     class Meta:
