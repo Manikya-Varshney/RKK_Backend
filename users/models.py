@@ -22,7 +22,7 @@ class Profile(models.Model):
     subjects = models.ManyToManyField(to=Subject, related_name="Subjects", null=True)
 
     def __str__(self):
-        return self.phone_number + ' - ' + self.id
+        return "{} - {}".format(self.phone_number, str(self.id))
 
     @classmethod
     def getAllAddresses(cls, id):
