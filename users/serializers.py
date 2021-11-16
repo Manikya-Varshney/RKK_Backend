@@ -35,8 +35,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         if 'subjects' in validated_data:
             for s in validated_data.get('subjects'):
-                subject = Subject.objects.get(id = s)
-                instance.subjects.add(subject)
+                # subject = Subject.objects.get(id = s)
+                instance.subjects.add(s)
 
         instance.save()
         return instance
