@@ -6,6 +6,7 @@ from . import utils
 
 from .serializers import *
 from cbse.serializers import *
+from users.serializers import *
 
 from users.models import *
 from cbse.models import *
