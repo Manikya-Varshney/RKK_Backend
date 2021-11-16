@@ -114,8 +114,9 @@ def get_all_languages(request):
 @api_view(['POST',])
 def update_profile(request):
     if request.method == "POST":
-        profile = Profile.objects.get(id = request.POST.get('id'))
         print(request.data)
+
+        profile = Profile.objects.get(id = request.POST.get('id'))
         profile_serializer = ProfileSerializer(profile, data = request.data)
         print(repr(profile_serializer))
         if not profile_serializer.is_valid():
