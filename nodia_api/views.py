@@ -41,8 +41,9 @@ def generate_otp(request):
         if user_profile:
             user_profile.otp = otp
             user_profile.save()
+            profile_serializer = ProfileSerializer(user_profile)
             message = Constants.OTP_MESSAGE + " {otp} \n {hash}".format(otp = otp, hash = hashValue)
-            data = {Constants.MESSAGE: message, Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}
+            data = {Constants.MESSAGE: message, Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: False}
             return Response(data, status = status.HTTP_200_OK)
         else:
             return Response({Constants.MESSAGE: 'User Does Not Exist', Constants.IS_VERIFIED: False, Constants.PROFILE: None}, status = status.HTTP_200_OK)
@@ -63,14 +64,15 @@ def verify_otp(request):
             return Response({Constants.MESSAGE: 'Profile does not exist!', Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_404_NOT_FOUND)
 
         if user_profile:
+            profile_serializer = ProfileSerializer(user_profile)
             if otp == str(user_profile.otp) :
                 if (timezone.now() - user_profile.otp_timestamp).seconds < 1800:
-                    data = {Constants.MESSAGE: 'OTP Verified Successfully!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: True}
+                    data = {Constants.MESSAGE: 'OTP Verified Successfully!', Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: True}
                     return Response(data, status = status.HTTP_200_OK)
                 else:
-                    return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
+                    return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
+                return Response({Constants.MESSAGE: 'OTP Verification Failed!. The entered OTP is incorrect', Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
 
 @api_view(["GET"])
 def get_all_boards(request):
