@@ -44,4 +44,7 @@ class Plan(models.Model):
     price = models.IntegerField()
     discount = models.IntegerField()
     number_of_days = models.IntegerField()
+
+    def __str__(self) -> str:
+        return "{} - ₹ {}".format(self.name, self.price)
     
