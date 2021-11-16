@@ -114,13 +114,13 @@ def get_all_languages(request):
 @api_view(['POST',])
 def update_profile(request):
     if request.method == "POST":
-        profile_serializer = ProfileSerializer(data = request.data)
-
+        profile = Profile.objects.get(id = request.POST.get('id'))
+        print(request.data)
+        profile_serializer = ProfileSerializer(profile, data = request.data)
+        print(repr(profile_serializer))
         if not profile_serializer.is_valid():
             print(profile_serializer.errors)
             return Response({Constants.MESSAGE: 'Invalid data', Constants.PROFILE: None}, status = status.HTTP_400_BAD_REQUEST)
-    
-        profile = Profile.objects.get(id = request.POST.get('id'))
-        updated_profile = profile_serializer.update(profile, request.data)
 
+        updated_profile = profile_serializer.save()
         return Response({Constants.MESSAGE: 'Profile update successfully', Constants.PROFILE: model_to_dict(updated_profile)}, status = status.HTTP_200_OK)
