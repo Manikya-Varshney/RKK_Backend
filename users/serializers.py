@@ -1,9 +1,10 @@
 from rest_framework import fields, serializers
+
 from cbse.models import Board, Language, Standard
 from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
-
+    board = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Profile
         fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard']
