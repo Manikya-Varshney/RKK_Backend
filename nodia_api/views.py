@@ -102,4 +102,11 @@ def get_all_chapters(request):
         chapter_serializer = ChapterSerializer(chapters, many = True)
         return Response(chapter_serializer.data, status = status.HTTP_200_OK)
 
-        
+@api_view(["GET"])
+def get_all_languages(request):
+    if request.method == "GET":
+        board_id = request.GET.get('board_id', 1)
+        languages = Language.objects.filter(boards__id = board_id)
+        language_serializer = LanguageSerializer(languages, many = True)
+        return Response(language_serializer.data, status = status.HTTP_200_OK)
+

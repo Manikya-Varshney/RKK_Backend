@@ -27,3 +27,10 @@ class ChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chapter
         fields = ['name','chapter_link','subject']
+
+class LanguageSerializer(serializers.ModelSerializer):
+    boards = BoardSerializer(many = True)
+
+    class Meta:
+        model = Language
+        fields = ['name','id','boards']
