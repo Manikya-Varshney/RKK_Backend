@@ -9,5 +9,6 @@ urlpatterns = [
     path('get_all_standards', get_all_standards, name = 'get_all_standards'),
     path('get_all_subjects', get_all_subjects, name = 'get_all_subjects'),
     path('get_all_chapters', get_all_chapters, name = 'get_all_chapters'),
-    path('get_all_languages', get_all_languages, name = "get_all_languages")
+    path('get_all_languages', get_all_languages, name = "get_all_languages"),
+    path('update_profile', update_profile, name = "update_profile")
 ]

@@ -22,10 +22,10 @@ from rest_framework import status
 def generate_otp(request):
     if request.method == "POST":
         hashValue = request.POST.get(Constants.HASH)
-        phone_number = request.POST.get(Constants.PHONE_NUMBER) 
+        phone_number = request.POST.get(Constants.PHONE_NUMBER)
 
         otp = utils.otp_generator()
-        serializer = OTPSerializer(data = request.data)  
+        serializer = OTPSerializer(data = request.data)
 
         if not serializer.is_valid():
             return Response({Constants.MESSAGE:"Invalid phone number", Constants.PROFILE: None, Constants.IS_VERIFIED: False}, status = status.HTTP_200_OK)
@@ -39,7 +39,7 @@ def generate_otp(request):
 
         if user_profile:
             user_profile.otp = otp
-            user_profile.save()          
+            user_profile.save()
             message = Constants.OTP_MESSAGE + " {otp} \n {hash}".format(otp = otp, hash = hashValue)
             data = {Constants.MESSAGE: message, Constants.PROFILE: model_to_dict(user_profile), Constants.IS_VERIFIED: False}
             return Response(data, status = status.HTTP_200_OK)
@@ -74,7 +74,7 @@ def verify_otp(request):
 @api_view(["GET"])
 def get_all_boards(request):
     if request.method == "GET":
-        boards = Board.objects.all()    
+        boards = Board.objects.all()
         board_serializer = BoardSerializer(boards, many = True)
         return Response(board_serializer.data, status = status.HTTP_200_OK)
 
@@ -110,3 +110,15 @@ def get_all_languages(request):
         language_serializer = LanguageSerializer(languages, many = True)
         return Response(language_serializer.data, status = status.HTTP_200_OK)
 
+@api_view(['POST',])
+def update_profile(request):
+    if request.method == "POST":
+        profile_serializer = ProfileSerializer(request.data)
+
+        if not profile_serializer.is_valid():
+            return Response({Constants.MESSAGE: 'Invalid data', Constants.PROFILE: None}, status = status.HTTP_400_BAD_REQUEST)
+
+        profile = Profile.objects.get(request.data.get('id'))
+        updated_profile = profile_serializer.update(profile, request.data)
+
+        return Response({Constants.MESSAGE: 'Profile update successfully', Constants.PROFILE: model_to_dict(updated_profile)}, status = status.HTTP_200_OK)
