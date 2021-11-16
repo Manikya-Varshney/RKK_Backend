@@ -28,3 +28,10 @@ class Chapter(models.Model):
 
     def __str__(self) -> str:
         return "{} - {} - {}".format(self.name, self.subject.name, self.chapter_link)
+
+class Language(models.Model):
+    name = models.CharField(max_length=15)
+    boards = models.ManyToManyField(to=Board)
+
+    def __str__(self) -> str:
+        return self.name
