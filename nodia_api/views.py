@@ -113,7 +113,7 @@ def get_all_chapters(request):
         subject_id = request.GET.get('subject_id', None)
         if subject_id:
             subject = Subject.objects.get(id = subject_id)
-            chapters = subject_id.chapters.all()
+            chapters = subject.chapters.all()
             # chapters = Chapter.objects.filter(subject__id = subject_id)
         else:
             chapters = Chapter.objects.all()
