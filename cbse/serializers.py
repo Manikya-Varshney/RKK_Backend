@@ -33,7 +33,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chapter
-        fields = ['name','chapter_link','subject']
+        fields = ['name','chapter_link','subject','id','is_locked']
 
 class LanguageSerializer(serializers.ModelSerializer):
     board = BoardSerializer(many = False)
