@@ -86,7 +86,9 @@ def get_all_standards(request):
     if request.method == "GET":
         board_id = request.GET.get('board_id', None)
         if board_id:
-            standards = Standard.objects.filter(boards__id = board_id)
+            board = Board.objects.get(id = board_id)
+            standards = board.standards.all()
+            # standards = Standard.objects.filter(board__id = board_id)
         else:
             standards = Standard.objects.all()
         standard_serializer = StandardSerializer(standards, many = True)
@@ -97,7 +99,9 @@ def get_all_subjects(request):
     if request.method == "GET":
         standard_id = request.GET.get('standard_id', None)
         if standard_id:
-            subjects = Subject.objects.filter(standards__id = standard_id)
+            standard = Standard.objects.get(id = standard_id)
+            subjects = standard.subjects.all()
+            # subjects = Subject.objects.filter(standards__id = standard_id)
         else:
             subjects = Subject.objects.all()
         subject_serializer = SubjectSerializer(subjects, many = True)
@@ -108,7 +112,9 @@ def get_all_chapters(request):
     if request.method == "GET":
         subject_id = request.GET.get('subject_id', None)
         if subject_id:
-            chapters = Chapter.objects.filter(subject__id = subject_id)
+            subject = Subject.objects.get(id = subject_id)
+            chapters = subject_id.chapters.all()
+            # chapters = Chapter.objects.filter(subject__id = subject_id)
         else:
             chapters = Chapter.objects.all()
         chapter_serializer = ChapterSerializer(chapters, many = True)
@@ -119,7 +125,9 @@ def get_all_languages(request):
     if request.method == "GET":
         board_id = request.GET.get('board_id', None)
         if board_id:
-            languages = Language.objects.filter(boards__id = board_id)
+            board = Board.objects.get(id = board_id)
+            languages = board.languages.all()
+            # languages = Language.objects.filter(boards__id = board_id)
         else:
             languages = Language.objects.all()
         language_serializer = LanguageSerializer(languages, many = True)
