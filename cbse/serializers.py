@@ -23,9 +23,10 @@ class StandardSerializer(serializers.ModelSerializer):
         fields = ['name','id','is_locked','board']
 
 class SubjectSerializer(serializers.ModelSerializer):
+    standard = StandardSerializer(many = False)
     class Meta:
         model = Subject
-        fields = '__all__'
+        fields = ['id','name','standard']
 
 class ChapterSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(many = False)
