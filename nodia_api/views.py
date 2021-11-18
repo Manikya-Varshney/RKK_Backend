@@ -84,32 +84,44 @@ def get_all_boards(request):
 @api_view(['GET'])
 def get_all_standards(request):
     if request.method == "GET":
-        board_id = request.GET.get('board_id', 1)
-        standards = Standard.objects.filter(boards__id = board_id)
+        board_id = request.GET.get('board_id', None)
+        if board_id:
+            standards = Standard.objects.filter(boards__id = board_id)
+        else:
+            standards = Standard.objects.all()
         standard_serializer = StandardSerializer(standards, many = True)
         return Response(standard_serializer.data, status = status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_all_subjects(request):
     if request.method == "GET":
-        standard_id = request.GET.get('standard_id', 1)
-        subjects = Subject.objects.filter(standards__id = standard_id)
+        standard_id = request.GET.get('standard_id', None)
+        if standard_id:
+            subjects = Subject.objects.filter(standards__id = standard_id)
+        else:
+            subjects = Subject.objects.all()
         subject_serializer = SubjectSerializer(subjects, many = True)
         return Response(subject_serializer.data, status = status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_all_chapters(request):
     if request.method == "GET":
-        subject_id = request.GET.get('subject_id', 2)
-        chapters = Chapter.objects.filter(subject__id = subject_id)
+        subject_id = request.GET.get('subject_id', None)
+        if subject_id:
+            chapters = Chapter.objects.filter(subject__id = subject_id)
+        else:
+            chapters = Chapter.objects.all()
         chapter_serializer = ChapterSerializer(chapters, many = True)
         return Response(chapter_serializer.data, status = status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_all_languages(request):
     if request.method == "GET":
-        board_id = request.GET.get('board_id', 1)
-        languages = Language.objects.filter(boards__id = board_id)
+        board_id = request.GET.get('board_id', None)
+        if board_id:
+            languages = Language.objects.filter(boards__id = board_id)
+        else:
+            languages = Language.objects.all()
         language_serializer = LanguageSerializer(languages, many = True)
         return Response(language_serializer.data, status = status.HTTP_200_OK)
 
