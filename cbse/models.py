@@ -21,7 +21,7 @@ class Subject(models.Model):
     standard = models.ForeignKey(to = Standard, on_delete=models.CASCADE, related_name="subjects")
 
     def __str__(self) -> str:
-        return self.name
+        return "{} - {} - {}".format(self.name, self.standard.board.name, self.standard.name)
 
 class Chapter(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
@@ -38,4 +38,4 @@ class Language(models.Model):
     board = models.ForeignKey(to = Board, on_delete=models.CASCADE, related_name="languages")
 
     def __str__(self) -> str:
-        return self.name
+        return "{} - {}".format(self.name, self.board.name)

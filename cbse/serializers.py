@@ -16,11 +16,11 @@ class BoardSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class StandardSerializer(serializers.ModelSerializer):
-    boards = BoardSerializer(many = True)
+    board = BoardSerializer(many = False)
 
     class Meta:
         model = Standard
-        fields = ['name','id','is_locked','boards']
+        fields = ['name','id','is_locked','board']
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,8 +35,8 @@ class ChapterSerializer(serializers.ModelSerializer):
         fields = ['name','chapter_link','subject']
 
 class LanguageSerializer(serializers.ModelSerializer):
-    boards = BoardSerializer(many = True)
+    board = BoardSerializer(many = False)
 
     class Meta:
         model = Language
-        fields = ['name','id','boards']
+        fields = ['name','id','board']
