@@ -7,7 +7,7 @@ from cbse.serializers import LanguageSerializer, StandardSerializer, SubjectSeri
 class ProfileSerializer(serializers.ModelSerializer):
 
     subjects = serializers.PrimaryKeyRelatedField(many = True, queryset = Subject.objects.all())
-    lamguage = LanguageSerializer(many = False)
+    language = LanguageSerializer(many = False)
     standard = StandardSerializer(many = False)
     # subjects = SubjectSerializer(many = True, required = False)
 
