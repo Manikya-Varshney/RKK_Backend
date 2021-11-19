@@ -7,9 +7,12 @@ from cbse.serializers import BoardSerializer, LanguageSerializer, StandardSerial
 class ProfileSerializer(serializers.ModelSerializer):
 
     subjects = serializers.PrimaryKeyRelatedField(many = True,  read_only = True)
-    language = LanguageSerializer(many = False)
-    standard = StandardSerializer(many = False)
-    board = BoardSerializer(many = False)
+    language = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
+    standard = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
+    board = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
+    # language = LanguageSerializer(many = False)
+    # standard = StandardSerializer(many = False)
+    # board = BoardSerializer(many = False)
     # subjects = SubjectSerializer(many = True, required = False)
 
     class Meta:
@@ -22,7 +25,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return Profile.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        print(validated_data['board']['id'])
+        print(validated_data)
 
         instance.name = validated_data.get('name', instance.name)
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
