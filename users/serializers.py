@@ -22,7 +22,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return Profile.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        print(validated_data)
+        print(validated_data['board']['id'])
 
         instance.name = validated_data.get('name', instance.name)
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
