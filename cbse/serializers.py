@@ -11,12 +11,14 @@ class PlanSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BoardSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = Board
         fields = ['name','id']
 
 class StandardSerializer(serializers.ModelSerializer):
     board = BoardSerializer(many = False)
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Standard
@@ -24,6 +26,8 @@ class StandardSerializer(serializers.ModelSerializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     standard = StandardSerializer(many = False)
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = Subject
         fields = ['id','name','standard']
@@ -37,6 +41,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 
 class LanguageSerializer(serializers.ModelSerializer):
     board = BoardSerializer(many = False)
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Language
