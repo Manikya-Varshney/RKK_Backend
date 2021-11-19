@@ -48,11 +48,11 @@ class ProfileSerializer(serializers.ModelSerializer):
             standard = Standard.objects.get(id = id)
             instance.standard = standard
 
-        # if 'subjects' in validated_data:
-        #     instance.subjects.clear()
-        #     for s in validated_data.get('subjects'):
-        #         # subject = Subject.objects.get(id = s)
-        #         instance.subjects.add(s)
+        if 'subjects' in validated_data:
+            instance.subjects.clear()
+            for s in validated_data.get('subjects'):
+                subject = Subject.objects.get(id = s['id'])
+                instance.subjects.add(subject)
 
         instance.save()
         return instance
