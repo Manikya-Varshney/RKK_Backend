@@ -36,8 +36,8 @@ class ChapterSerializer(serializers.ModelSerializer):
         fields = ['name','chapter_link','subject','id','is_locked']
 
 class LanguageSerializer(serializers.ModelSerializer):
-    # board = BoardSerializer(many = False)
-    board = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
+    board = BoardSerializer(many = False)
+
     class Meta:
         model = Language
         fields = ['name','id','board']

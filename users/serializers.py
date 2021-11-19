@@ -7,7 +7,7 @@ from cbse.serializers import BoardSerializer, LanguageSerializer, StandardSerial
 class ProfileSerializer(serializers.ModelSerializer):
 
     subjects = serializers.PrimaryKeyRelatedField(many = True,  read_only = True)
-    language = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
+    language = serializers.PrimaryKeyRelatedField(many = False, queryset = Language.objects.all())
     standard = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
     board = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
     # language = LanguageSerializer(many = False)
