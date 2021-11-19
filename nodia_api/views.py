@@ -169,5 +169,5 @@ def update_profile(request):
             return Response({Constants.MESSAGE: 'Invalid data', Constants.PROFILE: None}, status = status.HTTP_400_BAD_REQUEST)
 
         updated_profile = profile_serializer.save()
-        print(profile_serializer.data)
+        print("profile", profile_serializer.data)
         return Response({Constants.MESSAGE: 'Profile update successfully', Constants.PROFILE: profile_serializer.data}, status = status.HTTP_200_OK)
