@@ -7,7 +7,7 @@ from cbse.serializers import BoardSerializer, LanguageSerializer, StandardSerial
 class ProfileSerializer(serializers.ModelSerializer):
 
     subjects = serializers.PrimaryKeyRelatedField(many = True,  read_only = True)
-    language = serializers.PrimaryKeyRelatedField(many = False, queryset = Language.objects.all())
+    language = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
     standard = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
     board = serializers.PrimaryKeyRelatedField(many = False, read_only = True)
     # language = LanguageSerializer(many = False)
@@ -19,7 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard','subjects']
         extra_kwargs = {'subjects': {'required': False}}
-        depth = 3
+        depth = 1
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
