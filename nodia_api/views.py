@@ -161,7 +161,7 @@ def update_profile(request):
     if request.method == "POST":
         print(request.data)
 
-        profile = Profile.objects.get(id = request.POST.get('phone_number'))
+        profile = Profile.objects.get(phone_number = request.POST.get('phone_number'))
         profile_serializer = ProfileSerializer(profile, data = request.data)
         print(repr(profile_serializer))
         if not profile_serializer.is_valid():
