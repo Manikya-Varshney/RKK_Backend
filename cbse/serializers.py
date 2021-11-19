@@ -41,4 +41,4 @@ class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
         fields = ['name','id','board']
-        depth = 1
+        # depth = 1
