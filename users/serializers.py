@@ -19,7 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard','subjects']
         extra_kwargs = {'subjects': {'required': False}}
-        depth = 1
+        depth = 2
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
