@@ -15,7 +15,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['phone_number', 'name', 'otp', 'otp_timestamp', 'city', 'state', 'board', 'language', 'standard','subjects']
-        extra_kwargs = {'phone_number': {'required': False}, 'subjects': {'required': False}}
+        extra_kwargs = {'subjects': {'required': False}}
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
@@ -28,6 +28,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.city = validated_data.get('city', instance.city)
         instance.state = validated_data.get('state', instance.state)
         if 'board' in validated_data:
+            board_data = validated_data.pop('board', None)
+            board = Board.objects.get(**board_data)
+            print(board)
             instance.board = validated_data.get('board')
 
         if 'language' in validated_data:
