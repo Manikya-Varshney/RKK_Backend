@@ -175,10 +175,10 @@ def update_profile(request):
 @api_view(["GET"])
 def get_my_subjects(request):
     if request.method == "GET":
-        profile_id = request.GET.get('profile_id', None)
-        if profile_id:
+        phone_number = request.GET.get('phone_number', None)
+        if phone_number:
             try:
-                profile = Profile.objects.get(id = profile_id)
+                profile = Profile.objects.get(phone_number = phone_number)
                 subjects = profile.subjects.all()
             except:
                 return Response({}, status = status.HTTP_404_NOT_FOUND)
