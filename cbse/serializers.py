@@ -13,7 +13,7 @@ class PlanSerializer(serializers.ModelSerializer):
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = '__all__'
+        fields = ['name','id']
 
 class StandardSerializer(serializers.ModelSerializer):
     board = BoardSerializer(many = False)
