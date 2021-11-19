@@ -2,13 +2,14 @@ from rest_framework import fields, serializers
 
 from cbse.models import Board, Language, Standard, Subject
 from .models import Profile
-from cbse.serializers import LanguageSerializer, StandardSerializer, SubjectSerializer
+from cbse.serializers import BoardSerializer, LanguageSerializer, StandardSerializer, SubjectSerializer
 
 class ProfileSerializer(serializers.ModelSerializer):
 
     subjects = serializers.PrimaryKeyRelatedField(many = True, queryset = Subject.objects.all())
     language = LanguageSerializer(many = False)
     standard = StandardSerializer(many = False)
+    board = BoardSerializer(many = False)
     # subjects = SubjectSerializer(many = True, required = False)
 
     class Meta:
