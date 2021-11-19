@@ -171,3 +171,18 @@ def update_profile(request):
         updated_profile = profile_serializer.save()
         print("profile", profile_serializer.data)
         return Response(profile_serializer.data, status = status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_my_subjects(request):
+    if request.method == "GET":
+        profile_id = request.GET.get('profile_id', None)
+        if profile_id:
+            try:
+                profile = Profile.objects.get(id = profile_id)
+                subjects = profile.subjects.all()
+            except:
+                return Response({}, status = status.HTTP_404_NOT_FOUND)
+
+        subject_serializer = SubjectSerializer(subjects, many = True)
+
+        return Response(subject_serializer.data, status = status.HTTP_200_OK)

@@ -19,7 +19,7 @@ class Profile(models.Model):
     board = models.ForeignKey(to=Board, on_delete=models.CASCADE, null=True)
     language = models.ForeignKey(to=Language, on_delete=models.CASCADE, null=True)
     standard = models.ForeignKey(to=Standard, on_delete=models.CASCADE, null=True)
-    subjects = models.ManyToManyField(to=Subject, related_name="Subjects")
+    subjects = models.ManyToManyField(to=Subject, related_name="subjects")
 
     def __str__(self):
         return "{} - {}".format(self.phone_number, str(self.id))
@@ -47,4 +47,3 @@ class Plan(models.Model):
 
     def __str__(self) -> str:
         return "{} - ₹ {}".format(self.name, self.price)
-    
