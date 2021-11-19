@@ -170,4 +170,4 @@ def update_profile(request):
 
         updated_profile = profile_serializer.save()
         print("profile", profile_serializer.data)
-        return Response({Constants.MESSAGE: 'Profile update successfully', Constants.PROFILE: profile_serializer.data}, status = status.HTTP_200_OK)
+        return Response(profile_serializer.data, status = status.HTTP_200_OK)
