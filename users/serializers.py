@@ -33,8 +33,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.state = validated_data.get('state', instance.state)
         if 'board' in validated_data:
             # board_data = validated_data.pop('board', None)
-            # board = Board.objects.get(**board_data)
-            instance.board = validated_data.get('board')
+            id = validated_data.get('id')
+            board = Board.objects.get(id = id)
+            instance.board = board
 
         if 'language' in validated_data:
             # language_data = validated_data.pop('language', None)
