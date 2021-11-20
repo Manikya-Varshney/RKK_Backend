@@ -12,6 +12,7 @@ from users.models import *
 from cbse.models import *
 
 import requests
+from django.utils import timezone
 
 from django.utils import timezone
 from django.forms.models import model_to_dict
@@ -160,29 +161,53 @@ def get_all_plans(request):
 def update_profile(request):
     if request.method == "POST":
         print(request.data)
-        print(request.data.get('phone_number'))
         profile = Profile.objects.get(phone_number = request.data.get('phone_number'))
         profile_serializer = ProfileSerializer(profile, data = request.data)
-        print(repr(profile_serializer))
         if not profile_serializer.is_valid():
             print(profile_serializer.errors)
             return Response({Constants.MESSAGE: 'Invalid data', Constants.PROFILE: None}, status = status.HTTP_400_BAD_REQUEST)
 
         updated_profile = profile_serializer.save()
-        print("profile", profile_serializer.data)
         return Response(profile_serializer.data, status = status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_my_subjects(request):
     if request.method == "GET":
         phone_number = request.GET.get('phone_number', None)
+        subjects = None
         if phone_number:
             try:
                 profile = Profile.objects.get(phone_number = phone_number)
                 subjects = profile.subjects.all()
             except:
-                return Response({}, status = status.HTTP_404_NOT_FOUND)
+                return Response({Constants.MESSAGE: "No subjects found"}, status = status.HTTP_404_NOT_FOUND)
+
+        if subjects is None:
+            return Response({Constants.MESSAGE: "No subjects found"}, status = status.HTTP_404_NOT_FOUND)
 
         subject_serializer = SubjectSerializer(subjects, many = True)
 
         return Response(subject_serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['POST'])
+def update_plan(request):
+    if request.method == "POST":
+        plan_id = request.POST.get('plan_id', None)
+        phone_number = request.POST.get('phone_number', None)
+
+        try:
+            profile = Profile.objects.get(phone_number = phone_number)
+        except:
+             return Response({Constants.MESSAGE: "Profile not found"}, status = status.HTTP_404_NOT_FOUND)
+
+        try:
+            plan = Plan.objects.get(id = plan_id)
+        except:
+             return Response({Constants.MESSAGE: "Plan does not exist"}, status = status.HTTP_404_NOT_FOUND)
+
+        profile.plan = plan
+        profile.plan_start_date = timezone.now()
+        profile.save()
+
+        profile_serializer = ProfileSerializer(profile)
+        return Response({Constants.MESSAGE: "Plan updated successfully", Constants.PROFILE: profile_serializer.data}, status = status.HTTP_200_OK)

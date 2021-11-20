@@ -12,6 +12,7 @@ urlpatterns = [
     path('get_all_languages', get_all_languages, name = "get_all_languages"),
     path('update_profile', update_profile, name = "update_profile"),
     path('get_all_plans', get_all_plans, name = "get_all_plans"),
-    path('get_my_subjects', get_my_subjects, name = "get_my_subjects")
+    path('get_my_subjects', get_my_subjects, name = "get_my_subjects"),
+    path('update_plan', update_plan, name = "update_plan")
 
 ]
