@@ -20,6 +20,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     days_remaining = serializers.SerializerMethodField('days_remaining_method')
 
     def days_remaining_method(self, profile):
+        if profile.plan_start_date is None:
+            return 0
         days_remaining = datetime.now().date() - profile.plan_start_date.date()
         return profile.plan.number_of_days - days_remaining.days
 

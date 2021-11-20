@@ -36,8 +36,8 @@ def generate_otp(request):
         except Profile.DoesNotExist:
             user_profile = Profile.objects.create(phone_number = phone_number)
 
-        url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
-        requests.post( url )
+        # url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
+        # requests.post( url )
 
         if user_profile:
             user_profile.otp = otp
@@ -210,4 +210,5 @@ def update_plan(request):
         profile.save()
 
         profile_serializer = ProfileSerializer(profile)
-        return Response({Constants.MESSAGE: "Plan updated successfully", Constants.PROFILE: profile_serializer.data}, status = status.HTTP_200_OK)
+        print(profile_serializer.data)
+        return Response(profile_serializer.data, status = status.HTTP_200_OK)
