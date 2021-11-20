@@ -69,7 +69,7 @@ def verify_otp(request):
             if otp == str(user_profile.otp) :
                 if (timezone.now() - user_profile.otp_timestamp).seconds < 1800:
                     data = {Constants.MESSAGE: 'OTP Verified Successfully!', Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: True}
-                    return Response(data, status = status.HTTP_200_OK)
+                    return Response(profile_serializer.data, status = status.HTTP_200_OK)
                 else:
                     return Response({Constants.MESSAGE: 'OTP has expired!', Constants.PROFILE: profile_serializer.data, Constants.IS_VERIFIED: False}, status = status.HTTP_401_UNAUTHORIZED)
             else:
@@ -212,3 +212,18 @@ def update_plan(request):
         profile_serializer = ProfileSerializer(profile)
         print(profile_serializer.data)
         return Response(profile_serializer.data, status = status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_profile(request):
+    if request.method == "GET":
+        phone_number = request.GET.get('phone_number', None)
+
+        if phone_number:
+            try: 
+                profile = Profile.objects.get(phone_number = phone_number)
+            except:
+                return Response({Constants.MESSAGE: "No user found"}, status = status.HTTP_400_BAD_REQUEST)
+            
+            profile_serializer = ProfileSerializer(profile)
+
+            return Response(profile_serializer.data, status = status.HTTP_200_OK)
