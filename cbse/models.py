@@ -32,6 +32,16 @@ class Chapter(models.Model):
     def __str__(self) -> str:
         return "{} - {} - {}".format(self.name, self.subject.name, self.chapter_link)
 
+class ChapterDocument(models.Model):
+    name = models.CharField(max_length=30, null=False, blank=False)
+    chapter = models.ForeignKey(to = Chapter, on_delete=models.CASCADE, related_name="documents")
+    pdf_link = models.URLField()
+    rank = models.IntegerField(default = None, null = True, blank = True)
+    is_locked = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return "{} - {} - {} - {}".format(str(self.rank), self.name, self.chapter.name, self.pdf_link)
+
 class Language(models.Model):
     name = models.CharField(max_length=15)
     # boards = models.ManyToManyField(to=Board)

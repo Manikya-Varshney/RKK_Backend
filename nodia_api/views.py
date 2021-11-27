@@ -20,6 +20,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+from django.db.models.signals import pre_save, post_save
+from django.utils.text import slugify
+
 @api_view(["POST"])
 def generate_otp(request):
     if request.method == "POST":
@@ -35,9 +38,9 @@ def generate_otp(request):
             user_profile = Profile.objects.get(phone_number = phone_number)
         except Profile.DoesNotExist:
             user_profile = Profile.objects.create(phone_number = phone_number)
-
-        # url = Constants.OTP_URL+ Constants.OTP_KEY+ "SMS/" + phone_number + "/" + str(otp)
-        # requests.post( url )
+        print(Constants.TEMPLATE_NAME)
+        url = Constants.OTP_URL + Constants.OTP_KEY + "SMS" + "/" + phone_number + "/" + str(otp) + "/" +  Constants.TEMPLATE_NAME
+        requests.post( url )
 
         if user_profile:
             user_profile.otp = otp
@@ -219,11 +222,40 @@ def get_profile(request):
         phone_number = request.GET.get('phone_number', None)
 
         if phone_number:
-            try: 
+            try:
                 profile = Profile.objects.get(phone_number = phone_number)
             except:
                 return Response({Constants.MESSAGE: "No user found"}, status = status.HTTP_400_BAD_REQUEST)
-            
+
             profile_serializer = ProfileSerializer(profile)
 
             return Response(profile_serializer.data, status = status.HTTP_200_OK)
+
+def document_pre_save(sender, instance, *args, **kwargs):
+    chapter = instance.chapter
+    no_of_docs = chapter.documents.count()
+    if instance.rank is None:
+        instance.rank = no_of_docs + 1
+
+    else:
+        if no_of_docs < instance.rank:
+            instance.rank = no_of_docs + 1
+
+        elif no_of_docs == instance.rank:
+            instance.rank = instance.rank
+
+        else:
+            doc_list = chapter.documents.all()
+            doc_list = [doc for doc in doc_list if doc.rank >= instance.rank]
+            for doc in doc_list:
+                doc.rank += 1
+                doc.save()
+                # doc.update(rank = doc.rank + 1)
+                # doc.objects.filter(name = doc.name).update(rank = doc.rank + 1)
+
+pre_save.connect(document_pre_save, sender = ChapterDocument)
+
+# @api_view(["GET"])
+# def chapter_document(request):
+#     if request.method == "GET":
+#         phone_number = request.GET.get('phone_number', None)
