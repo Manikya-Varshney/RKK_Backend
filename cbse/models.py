@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db.models.signals import pre_save, post_save
+
 class Board(models.Model):
     name = models.CharField(max_length=15, blank=False, null=False)
 
@@ -49,3 +51,28 @@ class Language(models.Model):
 
     def __str__(self) -> str:
         return "{} - {}".format(self.name, self.board.name)
+
+
+def document_pre_save(sender, instance, *args, **kwargs):
+    chapter = instance.chapter
+    no_of_docs = chapter.documents.count()
+    if instance.rank is None:
+        instance.rank = no_of_docs + 1
+
+    else:
+        if no_of_docs < instance.rank:
+            instance.rank = no_of_docs + 1
+
+        elif no_of_docs == instance.rank:
+            instance.rank = instance.rank
+
+        else:
+            doc_list = chapter.documents.all()
+            doc_list = [doc for doc in doc_list if doc.rank >= instance.rank]
+            for doc in doc_list:
+                doc.rank += 1
+                doc.save()
+                # doc.update(rank = doc.rank + 1)
+                # doc.objects.filter(name = doc.name).update(rank = doc.rank + 1)
+
+pre_save.connect(document_pre_save, sender = ChapterDocument)

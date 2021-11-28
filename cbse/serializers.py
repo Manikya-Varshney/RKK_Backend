@@ -47,3 +47,10 @@ class LanguageSerializer(serializers.ModelSerializer):
         model = Language
         fields = ['name','id','board']
         # depth = 1
+
+class ChapterDocumentsSerializer(serializers.ModelSerializer):
+    chapter = ChapterSerializer(many = False)
+
+    class Meta:
+        model = ChapterDocument
+        fields = ['name','chapter','pdf_link','is_locked','rank']
