@@ -72,7 +72,5 @@ def document_pre_save(sender, instance, *args, **kwargs):
             for doc in doc_list:
                 doc.rank += 1
                 doc.save()
-                # doc.update(rank = doc.rank + 1)
-                # doc.objects.filter(name = doc.name).update(rank = doc.rank + 1)
 
 pre_save.connect(document_pre_save, sender = ChapterDocument)
