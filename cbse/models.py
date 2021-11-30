@@ -60,17 +60,14 @@ def document_pre_save(sender, instance, *args, **kwargs):
         instance.rank = no_of_docs + 1
 
     else:
-        if no_of_docs < instance.rank:
-            instance.rank = no_of_docs + 1
-
-        elif no_of_docs == instance.rank:
-            instance.rank = instance.rank
-
-        else:
+        if instance.rank <= no_of_docs:
             doc_list = chapter.documents.all()
             doc_list = [doc for doc in doc_list if doc.rank >= instance.rank]
+            print(doc_list, instance.rank)
             for doc in doc_list:
                 doc.rank += 1
                 doc.save()
-
+        else:
+            instance.rank = no_of_docs + 1
+            
 pre_save.connect(document_pre_save, sender = ChapterDocument)
