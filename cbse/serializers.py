@@ -34,10 +34,15 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class ChapterSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(many = False)
+    pdf_count = serializers.SerializerMethodField('get_pdf_count')
+
+    def get_pdf_count(self, chapter_document):
+        return chapter_document.documents.count()
+
 
     class Meta:
         model = Chapter
-        fields = ['name','chapter_link','subject','id','is_locked']
+        fields = ['name','chapter_link','subject','id','is_locked','pdf_count']
 
 class LanguageSerializer(serializers.ModelSerializer):
     board = BoardSerializer(many = False)

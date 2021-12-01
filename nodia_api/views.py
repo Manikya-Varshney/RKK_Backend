@@ -242,5 +242,6 @@ def get_chapter_documents(request):
             chapter_documents_serializer = ChapterDocumentsSerializer(chapter_documents, many = True)
             return Response(chapter_documents_serializer.data, status = status.HTTP_200_OK)
         
-        except:
+        except Exception as e:
+            print(e)
             return Response({Constants.MESSAGE:"Chapter does not exist"}, status = status.HTTP_404_NOT_FOUND)
