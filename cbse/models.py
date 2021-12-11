@@ -27,12 +27,12 @@ class Subject(models.Model):
 
 class Chapter(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
-    chapter_link = models.URLField()
+    # chapter_link = models.URLField()
     subject = models.ForeignKey(to=Subject, on_delete=models.CASCADE, related_name="chapters")
     is_locked = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return "{} - {} - {}".format(self.name, self.subject.name, self.chapter_link)
+        return "{} - {}".format(self.name, self.subject.name)
 
 class ChapterDocument(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
